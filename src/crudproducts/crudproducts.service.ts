@@ -24,8 +24,25 @@ export class CrudproductsService {
     return createCrudproduct.save();
   }
 
-  async findAll(): Promise<Crudproduct[]> {
-    return this.productModel.find().populate('user').exec();
+  async findAll(
+    page: number,
+    limit: number,
+  ): Promise<{
+    products: Crudproduct[];
+    total: number;
+    currentPage: number;
+    totalPages: number;
+  }> {
+    const skip = (page - 1) * limit;
+
+    const [products, total] = await Promise.all([
+      this.productModel.find().skip(skip).limit(limit).exec(),
+      this.productModel.countDocuments().exec(),
+    ]);
+
+    const totalPages = Math.ceil(total / limit);
+
+    return { products, total, currentPage: page, totalPages };
   }
 
   async findOne(id: string): Promise<Crudproduct | null> {
@@ -47,6 +64,8 @@ export class CrudproductsService {
     updateProductDto: UpdateCrudproductDto,
     user: any,
   ): Promise<Crudproduct | null> {
+    //const productImage = `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 10)}.jpg`;
+
     const product = await this.productModel.findByIdAndUpdate(
       id,
       updateProductDto,

@@ -29,6 +29,7 @@ npm install class-validator class-transformer
 
 ```sh
 npm install @nestjs/swagger swagger-ui-express
+npm install --save-dev @types/express-serve-static-core
 ```
 
 #### generate standard crud operation for contact

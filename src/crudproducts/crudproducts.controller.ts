@@ -1,3 +1,4 @@
+// src/crudproducts/crudproducts.controller.ts
 import {
   Body,
   Controller,
@@ -8,6 +9,7 @@ import {
   Patch,
   Req,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import {
@@ -15,10 +17,12 @@ import {
   ApiOperation,
   ApiResponse,
   ApiTags,
+  ApiQuery,
 } from '@nestjs/swagger';
 import { CrudproductsService } from './crudproducts.service';
 import { CreateCrudproductDto } from './dto/create-crudproduct.dto';
 import { UpdateCrudproductDto } from './dto/update-crudproduct.dto';
+import { Query as ExpressQuery } from 'express-serve-static-core';
 
 @ApiTags('Product Manage')
 @Controller('crudproducts')
@@ -40,8 +44,26 @@ export class CrudproductsController {
   @Get()
   @ApiOperation({ summary: 'Get all products' })
   @ApiResponse({ status: 200, description: 'Return all products' })
-  findAll() {
-    return this.crudProductService.findAll();
+  // Decorator for the 'page' query parameter
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    description: 'The page number for pagination',
+    type: Number,
+    example: 1,
+  })
+  // Decorator for the 'limit' query parameter
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'The number of items per page',
+    type: Number,
+    example: 10,
+  })
+  async findAll(@Query() query: ExpressQuery): Promise<any> {
+    const page = Number(query.page) || 1;
+    const limit = Number(query.limit) || 10;
+    return this.crudProductService.findAll(page, limit);
   }
 
   @Get(':id')
