@@ -1,4 +1,11 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { CreateCruduserDto } from './dto/create-cruduser.dto';
@@ -16,6 +23,7 @@ export class AuthController {
   async register(@Body() createUserDto: CreateCruduserDto) {
     return await this.authService.register(createUserDto);
   }
+
   @Post('login')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Log in a user' })

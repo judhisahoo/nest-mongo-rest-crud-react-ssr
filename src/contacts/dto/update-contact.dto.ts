@@ -19,7 +19,7 @@ export class UpdateContactDto extends PartialType(CreateContactDto) {
   @IsString()
   @IsOptional()
   @Length(5, 50, {
-    message: 'username length Must be between 6 and 50 charcters',
+    message: 'user name length Must be between 6 and 50 charcters',
   })
   name?: string;
 

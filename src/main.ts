@@ -15,6 +15,7 @@ async function bootstrap() {
     .addTag('Auth')
     .addTag('Product Manage')
     .addTag('Contacts Manage')
+    .addTag('All Users')
     .addBearerAuth(
       {
         type: 'http',
