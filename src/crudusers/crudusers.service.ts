@@ -50,10 +50,7 @@ export class CrudusersService {
     return { users, total, currentPage: page, totalPages };
   }
 
-  async update(
-    id: string,
-    updateCruduserDto: UpdateCruduserDto,
-  ): Promise<CrudUser> {
+  async update(id: string, updateCruduserDto: UpdateCruduserDto) {
     const updatedUser = await this.cruduserModel.findByIdAndUpdate(
       id,
       updateCruduserDto,
@@ -64,7 +61,9 @@ export class CrudusersService {
     if (!updatedUser) {
       throw new NotFoundException(`User with ID ${id} not found.`);
     }
-    return updatedUser;
+    return {
+      user: updatedUser, // Return the user details in the response
+    };
   }
 
   async changePassword(

@@ -65,11 +65,11 @@ export class CrudusersController {
     status: 200,
     description: 'Profile updated successfully',
   })
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateCruduserDto: UpdateCruduserDto,
   ) {
-    return this.cruduserService.update(id, updateCruduserDto);
+    return await this.cruduserService.update(id, updateCruduserDto);
   }
 
   @Patch('change-password')
