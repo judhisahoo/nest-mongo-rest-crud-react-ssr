@@ -11,6 +11,7 @@ import {
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
+import { IsEmailUnique } from './unique-email.decorator';
 
 export class CreateCruduserDto {
   @ApiProperty({ example: 'judhisthira Sahoo' })
@@ -23,6 +24,9 @@ export class CreateCruduserDto {
 
   @ApiProperty({ example: 'testuser@example.com' })
   @IsEmail()
+  @IsEmailUnique({
+    message: 'This email is already registered.',
+  })
   email: string;
 
   @ApiProperty({ example: '7008570074' })

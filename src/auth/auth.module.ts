@@ -1,5 +1,5 @@
 // src/auth/auth.module.ts
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
@@ -7,10 +7,11 @@ import { AuthService } from './auth.service';
 import { CrudusersModule } from 'src/crudusers/crudusers.module';
 import { JwtStrategy } from './jwt.strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { IsEmailUniqueConstraint } from './dto/unique-email.decorator';
 
 @Module({
   imports: [
-    CrudusersModule,
+    forwardRef(() => CrudusersModule),
     PassportModule,
     // Fix: Use JwtModule.registerAsync to read JWT_SECRET from .env
     JwtModule.registerAsync({
@@ -23,6 +24,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, IsEmailUniqueConstraint],
 })
 export class AuthModule {}
